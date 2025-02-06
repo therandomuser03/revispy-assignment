@@ -44,11 +44,13 @@ const Verify: React.FC = () => {
   return (
     <div className="my-20 bg-white flex flex-col items-center justify-center relative overflow-hidden">
       {/* Card Container */}
-      <div className="relative z-10 w-full max-w-md bg-white rounded-2xl border border-[#c1c1c1] shadow-md p-8">
+      <div className="relative z-10 w-full max-w-[576px] bg-white rounded-[20px] border border-[#c1c1c1] shadow-md p-8">
         <h1 className="text-center text-3xl font-semibold mb-4">Verify your email</h1>
         <p className="text-center text-base mb-8">
-          Enter the 8 digit code you have received on <br /> dev***@revispy.com
+          Enter the 8 digit code you have received on <br /><span className='font-semibold'>your@email.com</span>
         </p>
+        <br />
+        <p className="mb-2 px-8 font-medium">Code</p>
         {/* Input fields for the verification code */}
         <div className="flex justify-center space-x-2 mb-8">
           {code.map((digit, index) => (
