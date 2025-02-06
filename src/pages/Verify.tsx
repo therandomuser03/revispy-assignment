@@ -60,7 +60,7 @@ const Verify: React.FC = () => {
               maxLength={1}
               value={digit}
               onChange={(e) => handleChange(index, e.target.value)}
-              ref={(el) => (inputRefs.current[index] = el)}
+              ref={(el) => { inputRefs.current[index] = el; }}
               className="w-12 h-12 text-center border border-[#c1c1c1] rounded-md"
             />
           ))}
