@@ -70,7 +70,8 @@ The application should now be running at `http://localhost:5173` (frontend) and 
 4. **Selections persist** across sessions.
 
 ## 📷 Screenshots
-_Add screenshots here_
+![image](https://github.com/user-attachments/assets/560a4704-8e4c-44ea-bc77-f69be52cccf6)
+
 
 ## 📝 Future Improvements
 - Implement OAuth authentication
