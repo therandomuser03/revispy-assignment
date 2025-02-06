@@ -58,7 +58,7 @@ const Categories = () => {
                 type="checkbox"
                 checked={selectedCategories.includes(category.name)}
                 onChange={() => toggleCategory(category.name)}
-                className="form-checkbox h-5 w-5 text-blue-600"
+                className="form-checkbox h-5 w-5 text-black"  // Changed tick color to black
               />
               <span className="text-lg">{category.name}</span>
             </label>

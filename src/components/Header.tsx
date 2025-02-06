@@ -143,8 +143,8 @@ const Header = () => {
             <li><a href="#" className="text-gray-700 hover:text-black">Profile</a></li>
             <li><a href="#" className="text-gray-700 hover:text-black">Orders</a></li>
             <li><a href="#" className="text-gray-700 hover:text-black">Settings</a></li>
-            <li><button onClick={handleLogout} className="text-gray-700 hover:text-black w-full text-left">Logout</button></li>
-          </ul>
+            <li><button onClick={() => { handleLogout(); setSidebarOpen(false); }} className="text-gray-700 hover:text-black w-full text-left">Logout</button></li>
+            </ul>
         </div>
       </div>
     </header>

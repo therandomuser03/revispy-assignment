@@ -1,54 +1,82 @@
 // src/pages/Verify.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebaseConfig';
+import { sendEmailVerification } from 'firebase/auth';
 
-const Verify = () => {
+const Verify: React.FC = () => {
+  // Create state for an array of 8 digits for the verification code
+  const [code, setCode] = useState<string[]>(Array(8).fill(''));
   const navigate = useNavigate();
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const handleVerification = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real-world scenario, this would involve calling an API
-    // to validate the verification code. Here, we simulate success if the code is "123456".
-    if (code === '123456') {
-      // Redirect to the protected page after successful verification.
+  // Handle changes in any of the 8 input fields
+  const handleChange = (index: number, value: string) => {
+    // Allow only numeric input
+    if (value && !/^[0-9]$/.test(value)) return;
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+    // Automatically focus next input if available
+    if (value && index < 7) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleVerify = () => {
+    // Combine code digits into a single string
+    const verificationCode = code.join('');
+    // For demonstration, assume the correct code is "12345678"
+    if (verificationCode === '12345678') {
       navigate('/categories');
     } else {
-      setError('Invalid verification code. Please try again.');
+      alert('Invalid code. Please try again.');
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (auth.currentUser) {
+      await sendEmailVerification(auth.currentUser);
+      alert('Verification email resent!');
     }
   };
 
   return (
     <div className="my-20 bg-white flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="relative z-10 w-full max-w-[576px] bg-white rounded-[20px] border border-[#c1c1c1] shadow-md p-8">
-        <h1 className="text-center text-3xl font-semibold mb-4">Email Verification</h1>
-        <p className="text-center text-base mb-6">
-          We’ve sent a verification code to your email. Please enter it below.
+      {/* Card Container */}
+      <div className="relative z-10 w-full max-w-md bg-white rounded-2xl border border-[#c1c1c1] shadow-md p-8">
+        <h1 className="text-center text-3xl font-semibold mb-4">Verify your email</h1>
+        <p className="text-center text-base mb-8">
+          Enter the 8 digit code you have received on <br /> dev***@revispy.com
         </p>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleVerification} className="space-y-6">
-          <div className="mb-6">
-            <label htmlFor="code" className="block text-base text-black mb-1">
-              Verification Code
-            </label>
+        {/* Input fields for the verification code */}
+        <div className="flex justify-center space-x-2 mb-8">
+          {code.map((digit, index) => (
             <input
-              id="code"
+              key={index}
               type="text"
-              placeholder="Enter verification code"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="w-full h-12 px-4 py-2 bg-white rounded-md border border-[#c1c1c1] focus:outline-none focus:ring-2 focus:ring-gray-300"
-              required
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleChange(index, e.target.value)}
+              ref={(el) => (inputRefs.current[index] = el)}
+              className="w-12 h-12 text-center border border-[#c1c1c1] rounded-md"
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full h-14 bg-black text-white rounded-md border border-black uppercase tracking-wide font-medium flex items-center justify-center hover:bg-gray-800 transition"
-          >
-            Verify
-          </button>
-        </form>
+          ))}
+        </div>
+        {/* Verify Button */}
+        <button
+          onClick={handleVerify}
+          className="w-full h-14 bg-black text-white rounded-md border border-black uppercase tracking-wide font-medium flex items-center justify-center hover:bg-gray-800 transition mb-4"
+        >
+          Verify
+        </button>
+        {/* Resend Verification Email Button */}
+        <button
+          onClick={handleResendVerification}
+          className="w-full h-14 bg-blue-500 text-white rounded-md border border-blue-500 uppercase tracking-wide font-medium flex items-center justify-center hover:bg-blue-600 transition"
+        >
+          Resend Verification Email
+        </button>
       </div>
     </div>
   );

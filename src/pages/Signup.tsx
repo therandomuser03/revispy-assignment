@@ -1,11 +1,11 @@
 // src/pages/Signup.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/auth';
+import { auth } from '../firebaseConfig';
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { login } = useAuthStore();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,30 +13,33 @@ const Signup = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate registration process; in a real-world scenario, call your registration API here.
-    setTimeout(() => {
-      setIsLoading(false);
-      // For demo purposes, log in the user and redirect to the Verify page.
-      login(email);
+    setError(null);
+    try {
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Optionally update profile with the name here if needed
+
+      // Send a verification email
+      await sendEmailVerification(userCredential.user);
+      // Navigate to the verification screen
       navigate('/verify');
-    }, 1500);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="my-20 bg-white flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Main Card */}
       <div className="relative z-10 w-full max-w-[576px] bg-white rounded-[20px] border border-[#c1c1c1] shadow-md p-8">
         <h1 className="text-center text-3xl font-semibold mb-4">
           Create your account
         </h1>
-
-        {/* Error Message */}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-        {/* Form */}
         <form onSubmit={handleRegister} className="space-y-6">
           {/* Name Field */}
           <div className="mb-6">
@@ -53,7 +56,6 @@ const Signup = () => {
               required
             />
           </div>
-
           {/* Email Field */}
           <div className="mb-6">
             <label htmlFor="email" className="block text-base text-black mb-1">
@@ -69,7 +71,6 @@ const Signup = () => {
               required
             />
           </div>
-
           {/* Password Field */}
           <div className="mb-6 relative">
             <label htmlFor="password" className="block text-base text-black mb-1">
@@ -84,7 +85,6 @@ const Signup = () => {
               className="w-full h-12 px-4 py-2 bg-white rounded-md border border-[#c1c1c1] focus:outline-none focus:ring-2 focus:ring-gray-300"
               required
             />
-            {/* Toggle Password Visibility */}
             <span
               onClick={() => setPasswordVisible(!passwordVisible)}
               className="absolute right-4 top-10 text-black text-base cursor-pointer select-none font-semibold underline"
@@ -92,7 +92,6 @@ const Signup = () => {
               {passwordVisible ? "Hide" : "Show"}
             </span>
           </div>
-
           {/* Submit Button */}
           <button
             type="submit"
@@ -104,9 +103,7 @@ const Signup = () => {
             {isLoading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
-
         <br />
-
         {/* Login Link */}
         <div className="mt-4 flex justify-center items-center space-x-2">
           <span className="text-base text-[#333333]">Have an account?</span>
