@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from "../assets/Search.png";
 import cartIcon from "../assets/Cart.png";

@@ -1,5 +1,5 @@
 // src/pages/Categories.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 import Pagination from '../components/Pagination';
 import { useCategoryStore } from '../store/categories';
