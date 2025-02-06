@@ -10,7 +10,7 @@ const Header = () => {
   // State for promo carousel
   const promos = [
     "Get 10% off on business sign up",
-    "Free shipping on orders over $50",
+    "Free shipping on orders over ₹499",
     "Exclusive deals for our members"
   ];
   const [promoIndex, setPromoIndex] = useState(0);
