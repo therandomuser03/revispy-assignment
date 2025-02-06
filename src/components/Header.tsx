@@ -134,7 +134,7 @@ const Header = () => {
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-semibold">Account</h2>
-          <button onClick={toggleSidebar} className="text-gray-600 hover:text-gray-800">
+          <button onClick={toggleSidebar} className="text-gray-600 hover:text-gray-800 cursor-pointer">
             Close
           </button>
         </div>
@@ -143,7 +143,7 @@ const Header = () => {
             <li><a href="#" className="text-gray-700 hover:text-black">Profile</a></li>
             <li><a href="#" className="text-gray-700 hover:text-black">Orders</a></li>
             <li><a href="#" className="text-gray-700 hover:text-black">Settings</a></li>
-            <li><button onClick={() => { handleLogout(); setSidebarOpen(false); }} className="text-gray-700 hover:text-black w-full text-left">Logout</button></li>
+            <li><button onClick={() => { handleLogout(); setSidebarOpen(false); }} className="text-gray-700 hover:text-black w-full text-left cursor-pointer">Logout</button></li>
             </ul>
         </div>
       </div>
