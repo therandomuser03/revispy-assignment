@@ -1,28 +1,81 @@
-// src/components/Pagination.tsx
+// src/components/CustomPagination.tsx
 import React from 'react';
-import ReactPaginate from 'react-paginate';
 
 interface PaginationProps {
+  currentPage: number;
   pageCount: number;
-  onPageChange: (selectedItem: { selected: number }) => void;
+  onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ pageCount, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, pageCount, onPageChange }) => {
+  const windowSize = 7;
+  let startPage = 1;
+  let endPage = pageCount;
+  
+  if (pageCount > windowSize) {
+    // If currentPage is 7 or below, show pages 1 to 7.
+    if (currentPage <= windowSize) {
+      startPage = 1;
+      endPage = windowSize;
+    } else {
+      // Otherwise, slide the window so that currentPage appears within it.
+      startPage = currentPage - 4;
+      endPage = startPage + windowSize - 1;
+      // Ensure we don't exceed pageCount.
+      if (endPage > pageCount) {
+        endPage = pageCount;
+        startPage = pageCount - windowSize + 1;
+      }
+    }
+  }
+  
+  // Create an array of page numbers for the window.
+  const pages = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  
+  const goToPrev = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+  
+  const goToNext = () => {
+    if (currentPage < pageCount) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
   return (
-    <ReactPaginate
-      previousLabel="Previous"
-      nextLabel="Next"
-      breakLabel="..."
-      pageCount={pageCount}
-      marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
-      onPageChange={onPageChange}
-      containerClassName="flex list-none space-x-2 justify-center my-4"
-      pageClassName="px-3 py-1 border border-gray-300 cursor-pointer"
-      activeClassName="bg-blue-500 text-white"
-      previousClassName="px-3 py-1 border border-gray-300 cursor-pointer"
-      nextClassName="px-3 py-1 border border-gray-300 cursor-pointer"
-    />
+    <div className="flex justify-center items-center my-12 space-x-2">
+      {/* Left Arrow */}
+      <button onClick={goToPrev} disabled={currentPage === 1}>
+        <span className="text-[#ababab] text-xl font-medium font-['Inter'] leading-relaxed">
+          {"<< <"}
+        </span>
+      </button>
+      
+      {/* Page Numbers */}
+      {pages.map((page) => (
+        <button 
+          key={page}
+          onClick={() => onPageChange(page)}
+          className={`px-3 py-1  cursor-pointer text-xl font-medium font-['Inter'] leading-relaxed ${
+            page === currentPage ? "text-black" : "text-[#ababab]"
+          }`}
+        >
+          {page}
+        </button>
+      ))}
+      
+      {/* Right Arrow */}
+      <button onClick={goToNext} disabled={currentPage === pageCount}>
+        <span className="text-[#ababab] text-xl font-medium font-['Inter'] leading-relaxed">
+          {"> >>"}
+        </span>
+      </button>
+    </div>
   );
 };
 

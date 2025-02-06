@@ -13,8 +13,16 @@ const App = () => {
     <Router>
       <Header />
       <Routes>
-        <Route 
+      <Route 
           path="/" 
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } 
+        />
+        <Route 
+          path="/login" 
           element={
             <PublicRoute>
               <Login />
