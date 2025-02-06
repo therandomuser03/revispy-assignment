@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 import Pagination from '../components/Pagination';
 import { useCategoryStore } from '../store/categories';
+import { updateUserSelections } from '../utils/updateUserSelections';
 
 interface Category {
   id: string;
@@ -16,14 +17,19 @@ const Categories = () => {
   const categoriesPerPage = 6;
   const { selectedCategories, toggleCategory } = useCategoryStore();
 
+  // Generate 100 fake categories on mount
   useEffect(() => {
-    // Generate 100 fake categories
     const fakeCategories = Array.from({ length: 100 }, () => ({
       id: faker.string.uuid(),
       name: faker.commerce.department(),
     }));
     setCategories(fakeCategories);
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Update Firestore whenever selectedCategories changes
+  useEffect(() => {
+    updateUserSelections(selectedCategories);
+  }, [selectedCategories]);
 
   // Calculate offset based on 1-based currentPage
   const offset = (currentPage - 1) * categoriesPerPage;
