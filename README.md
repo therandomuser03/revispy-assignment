@@ -1,6 +1,6 @@
-# Simple E-commerce with Categorization
+# Simple E-commerce
 
-A simple e-commerce frontend with authentication and category selection, built using **Vite + React + TailwindCSS + TypeScript** and integrated with a **tRPC backend** using **Prisma & SQLite**.
+A simple e-commerce frontend with authentication and category selection, built using **Vite + React + TailwindCSS + TypeScript** and integrated with a **tRPC** using **Firebase**.
 
 ## 🚀 Features
 - **User Authentication:** Sign-up and login system with session persistence.
@@ -13,23 +13,8 @@ A simple e-commerce frontend with authentication and category selection, built u
 ## 🛠 Tech Stack
 **Frontend:** React, Vite, TailwindCSS, TypeScript, tRPC
 
-**Backend:** Express.js, tRPC, Prisma, SQLite
+**Backend:** Firebase
 
-## 📂 Folder Structure
-```
-📦 ecommerce-app
-├── 📂 backend
-│   ├── prisma/         # Database schema & migrations
-│   ├── server.ts       # Express + tRPC server
-├── 📂 frontend
-│   ├── src/
-│   │   ├── pages/      # Login, Register, Categories pages
-│   │   ├── components/ # Reusable UI components
-│   │   ├── utils/      # API clients (tRPC)
-│   ├── index.tsx       # Main React entry point
-├── README.md           # Project documentation
-├── package.json        # Dependencies & scripts
-```
 
 ## 📦 Installation
 1. **Clone the Repository**
@@ -40,28 +25,22 @@ A simple e-commerce frontend with authentication and category selection, built u
 
 2. **Install Dependencies**
    ```sh
-   cd backend && npm install
-   cd ../frontend && npm install
-   ```
+   npm create vite@latest
+   cd /product-name
+   npm install
+   npm install react-paginate
+   npm install tailwindcss @tailwindcss/vite
+   npm install @trpc/client @trpc/server
+   npm install @faker-js/faker
+   npm install firebase
+   npm install --save-dev @types/react @types/react-dom
 
-3. **Setup Database (Prisma + SQLite)**
-   ```sh
-   cd backend
-   npx prisma migrate dev --name init
-   ```
-
-4. **Run Backend**
+3. **Run Project**
    ```sh
    npm run dev
    ```
 
-5. **Run Frontend**
-   ```sh
-   cd ../frontend
-   npm run dev
-   ```
-
-The application should now be running at `http://localhost:5173` (frontend) and `http://localhost:4000` (backend).
+The application should now be running at `http://localhost:5173`.
 
 ## 🚀 Usage
 1. **Register an account** on the Sign-up page.
