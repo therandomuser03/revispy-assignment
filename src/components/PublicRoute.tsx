@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth";
 
 interface PublicRouteProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 const PublicRoute = ({ children }: PublicRouteProps) => {
